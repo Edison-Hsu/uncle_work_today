@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/Shift.dart';
+import 'package:myapp/Work.dart';
 
+final Work work = new Work();
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
@@ -25,7 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final test = '夜落班';
+    final test = work.todayShift == null ? "请设置轮班信息" : work.todayShift.name;
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(title),
@@ -73,11 +76,10 @@ class SettingPageWidget extends StatefulWidget {
 }
 
 class _SettingPageWidgetState extends State<SettingPageWidget> {
-  final works = [];
-
   void _addWork(text) {
     setState(() {
-      works.add(text);
+      work.add(new Shift(text));
+      work.setTodayShift(0);
     });
   }
 
@@ -86,7 +88,7 @@ class _SettingPageWidgetState extends State<SettingPageWidget> {
         appBar: new AppBar(
           title: new Text(widget.title),
         ),
-        body: new Text(works.toString()),
+        body: new Text(work.shifts.toString()),
         floatingActionButton: new FloatingActionButton(
             onPressed: () {
               showDialog(
